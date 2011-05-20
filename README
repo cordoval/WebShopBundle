@@ -6,6 +6,6 @@
 
 Ajoutez le top-level namespace à l'autoload.php
 
-'CSF' => ' __DIR__.'/../src',
+'CSF' => __DIR__.'/../src',
 
 Ajoutez le namespace du bundle au AppKernel.php
