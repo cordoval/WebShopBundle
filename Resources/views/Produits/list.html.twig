@@ -1,0 +1,45 @@
+{% extends 'WebshopBundle::layout.html.twig' %}
+
+{% block produits %}
+Liste produits!
+{% for it in res %}
+{{ it }}
+{% endfor %}
+
+
+{% if paginator|length == 0 %}
+<p>Aucuns résultats !</p>
+
+{% else %}
+
+<table id="produit">
+<tr>
+{# trie par colonnes #}
+      <th>{{ paginator|sortable('Nom', 'u.name') }}</th>
+      <th>{{ paginator|sortable('Prix', 'u.prix') }}</th>
+      <th>Description</th>
+      <th>{{ paginator|sortable('Type', 'v.name') }}</th>
+</tr>
+{% for item in paginator %}
+<tr {% if loop.index is odd %}class="color"{% endif %}>
+    <td><a href="{{ path('show_prod', { 'slug': item.slug }) }}">{{ item.name }}</a></td>
+    <td>{{ item.prix }} €</td>
+    <td>{{ item.description }}</td>
+    <td>{{ item.productType.name }}</td>
+</tr>
+{% else %}
+<tr>
+<td>rien</td>
+<td>rien</td>
+<td>rien</td>
+<td>rien</td>
+</tr>
+{% endfor %}
+</table>
+{# pagination #}
+<div id="navigation">
+    {{ paginator|paginate }}
+</div>
+{% endif %}
+
+{% endblock %}

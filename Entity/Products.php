@@ -2,52 +2,64 @@
 
 namespace CSF\CartBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * CSF\CartBundle\Entity\Products
  *
- * @orm:Table()
- * @orm:Entity
+ * @ORM\Table()
+ * @ORM\Entity(repositoryClass="CSF\CartBundle\Entity\ProductRepository")
  */
 class Products
 {
     /**
      * @var integer $id
      *
-     * @orm:Column(name="id", type="integer")
-     * @orm:Id
-     * @orm:GeneratedValue(strategy="AUTO")
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
     /**
      * @var string $name
-     *
-     * @orm:Column(name="name", type="string", length=255)
+     * @Gedmo\Sluggable
+     * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
 
     /**
+     * @Gedmo\Slug
+     * @ORM\Column(name="slug", type="string", length=128, unique=true)
+     */
+    private $slug;
+    
+    /**
      * @var integer $prix
      *
-     * @orm:Column(name="prix", type="integer")
+     * @ORM\Column(name="prix", type="integer")
      */
     private $prix;
 
     /**
      * @var text $description
      *
-     * @orm:Column(name="description", type="text")
+     * @ORM\Column(name="description", type="text")
      */
     private $description;
     
     /**
-     * @orm:ManyToOne(targetEntity="Products_Type", inversedBy="products")
-     * @orm:JoinColumn(name="product_type_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="ProductsType", inversedBy="products")
+     * @ORM\JoinColumn(name="product_type_id", referencedColumnName="id")
      */
-    private $product_type;
+    private $productType;
 
 
-
+	/**
+     * @ORM\OneToMany(targetEntity="CommandeItems", mappedBy="product")
+     */
+    private $commandeItems;
+    
     /**
      * Get id
      *
@@ -78,6 +90,8 @@ class Products
         return $this->name;
     }
 
+	
+    
     /**
      * Set prix
      *
@@ -119,22 +133,63 @@ class Products
     }
 
     /**
-     * Set product_type
+     * Set ProductsType
      *
-     * @param CSF\CartBundle\Entity\Products_Type $productType
+     * @param CSF\CartBundle\Entity\ProductsType $productType
      */
-    public function setProductType(\CSF\CartBundle\Entity\Products_Type $productType)
+    public function setProductType(\CSF\CartBundle\Entity\ProductsType $productType)
     {
-        $this->product_type = $productType;
+        $this->productType = $productType;
     }
 
     /**
-     * Get product_type
+     * Get ProductsType
      *
-     * @return CSF\CartBundle\Entity\Products_Type $productType
+     * @return CSF\CartBundle\Entity\ProductsType $productType
      */
     public function getProductType()
     {
-        return $this->product_type;
+        return $this->productType;
+    }
+
+    
+    public function __construct()
+    {
+        $this->commandeItems = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
+     * Add commandeItems
+     *
+     * @param CSF\CartBundle\Entity\CommandeItems $commandeItems
+     */
+    public function addCommandeItems(\CSF\CartBundle\Entity\CommandeItems $commandeItems)
+    {
+        $this->commandeItems[] = $commandeItems;
+    }
+
+    /**
+     * Get commandeItems
+     *
+     * @return Doctrine\Common\Collections\Collection $commandeItems
+     */
+    public function getCommandeItems()
+    {
+        return $this->commandeItems;
+    }
+    
+    public function __toString()
+    {
+    	return $this->name;
+    }
+    
+	public function getSlug()
+    {
+    	return $this->slug;
+    }
+    
+    public function setSlug($slug)
+    {
+    	$this->slug = $slug;
     }
 }

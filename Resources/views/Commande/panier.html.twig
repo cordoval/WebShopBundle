@@ -1,0 +1,54 @@
+{% extends 'WebshopBundle::layout.html.twig' %}
+
+{% block content %}
+<div style="margin: 10px">
+   	{% block panier %}
+   		<div id="block_panier">
+   			{% if app.session.hasFlash('panier') %}
+			    <div class="flash-notice">
+			        {{ app.session.flash('panier') }}
+			    </div>
+			{% endif %}
+   		</div>    		
+   	{% endblock %}
+</div>
+	{% if nombre == 0 %}
+	Votre panier est vide
+	{% else %}
+	Votre panier contient {{ nombre }} éléments:
+	
+	<table id="produit">
+		<tr>
+		{# trie par colonnes #}
+			  <th>Actions</th>
+		      <th>Catégorie</th>
+		      <th>Nom</th>
+		      <th>Description</th>
+		      <th>Prix TTC unitaire</th>
+		      <th>Quantité</th>
+		      <th>Prix total</th>
+		      <th>Disponibilité</th>
+		</tr>
+	{% for item in panier %}
+		<tr {% if loop.index is odd %}class="color"{% endif %}>
+			<td><a href="{{ path('suppr_prod_panier', {'id': item.id }) }}">Supprimer</a></td>			
+			<td>{{ item.product.productType.name }}</td>
+			<td><a href="{{ path('show_prod', { 'slug': item.product.slug }) }}">{{ item.product.name }}</a></td>
+			<td>{{ item.product.description }}</td>
+			<td>{{ item.product.prix }} €</td>
+			<td>
+			<form action="{{ path('_panier') }}" method="POST" >
+				<input type="hidden" name="id" value="{{ item.id }}" />
+	   			<input type="number" name="quantite" value="{{ item.quantite }}" />          
+				<input type="submit" />
+			</form>
+			</td>
+			<td>{{ item.calculPrix }}</td>	
+		    <td>{{ item.commandeItemsStatusCode.description }}</td>
+		</tr>
+	{% endfor %}
+	</table>
+	
+	{% endif %}
+
+{% endblock %}

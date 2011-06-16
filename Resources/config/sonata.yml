@@ -1,0 +1,17 @@
+services:
+   sonata.cart.admin.product.type:
+      class: CSF\CartBundle\Admin\ProductTypeAdmin
+      tags:
+        - { name: sonata.admin, manager_type: orm, group: "Produits", label: "Type de produit" }
+      arguments: [null, CSF\CartBundle\Entity\ProductsType, CSFCartBundle:ProductTypeAdmin]
+   sonata.cart.admin.status.items:
+      class: CSF\CartBundle\Admin\CommandeItemStatusCodeAdmin
+      tags:
+        - { name: sonata.admin, manager_type: orm, group: "Produits", label: "Status commande Produits" }
+      arguments: [null, CSF\CartBundle\Entity\CommandeItemStatusCode, CSFCartBundle:CommandeItemStatusCodeAdmin]
+   sonata.cart.admin.status.commande:
+      class: CSF\CartBundle\Admin\CommandeStatusCodeAdmin
+      tags:
+        - { name: sonata.admin, manager_type: orm, group: "Produits", label: "Status des commandes" }
+      arguments: [null, CSF\CartBundle\Entity\CommandeStatusCode, CSFCartBundle:CommandeStatusCodeAdmin]   
+      

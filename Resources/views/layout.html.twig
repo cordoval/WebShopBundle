@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" href="{{ asset('bundles/acmedemo/css/demo.css') }}" type="text/css" media="all" />
+        <title>{% block title %}Web shop{% endblock %}</title>
+        <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+    <body>      
+    <div style="margin: 0 100px;"> 
+    
+		
+		<div>
+		{% block prod %}
+		
+		{% endblock %}
+		
+		</div>
+    </div>
+    </body>
+</html>

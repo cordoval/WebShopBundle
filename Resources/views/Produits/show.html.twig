@@ -1,0 +1,11 @@
+{% extends 'WebshopBundle::layout.html.twig' %}
+
+{% block produits %}
+
+	<b>{{ produit.name }}</b>
+	Prix: {{ produit.prix }} €	
+	<p>Catégorie: {{ produit.productType.name }}</p>
+	
+	<a href="{{ path('ajout_panier', { 'id': produit.id })  }}">Ajouter au panier</a>
+	
+{% endblock %}
